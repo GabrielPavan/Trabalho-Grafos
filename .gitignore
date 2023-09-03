@@ -1,0 +1,48 @@
+# Ignorar arquivos compilados e arquivos de saída
+*.class
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+/target/
+/bin/
+/build/
+/*.log
+
+# Ignorar arquivos de configuração IDE
+/.idea/
+/.vscode/
+*.iml
+
+# Ignorar arquivos gerados automaticamente
+/target/
+out/
+gen/
+.idea/
+
+# Ignorar arquivos de dependências gerados pelo Maven ou Gradle
+/.m2/
+/.gradle/
+
+# Ignorar arquivos de configuração do Eclipse
+/.settings/
+
+# Ignorar arquivos de log e cache do Eclipse
+/log/
+/.metadata/
+
+# Ignorar arquivos de configuração do NetBeans
+/nb-configuration.xml
+
+# Ignorar arquivos de configuração do IntelliJ IDEA
+/*.iws
+/*.ipr
+/*.iml
+
+# Ignorar arquivos temporários e lixo
+*.tmp
+*.bak
+*.swp
+*.DS_Store
+Thumbs.db
