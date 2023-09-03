@@ -17,41 +17,47 @@ public class ManageFile {
 	private InputStreamReader InputStreamReader;
 	private BufferedReader BufferedFile;
 
-	private HashSet<String> NonRepeatingDataList = new HashSet<String>();
-	private List<String> SortedDataList;
+	private String FirstLine;
+	private List<String> DataList = new ArrayList<String>();
+	private List<String> NonConformingDataList = new ArrayList<String>();
+	private HashSet<String> ConformingDataList = new HashSet<String>();
 
 	public ManageFile(String pPath) {
 		this.Path = pPath;
 	}
-	public BufferedReader getBufferedFile() {
-		return this.BufferedFile;
+	public String getFirstLine() {
+		return FirstLine;
+	}
+	public List<String> getConformingDataList() {
+		List<String> SortedConformingDataList = new ArrayList<String>(ConformingDataList);
+		Collections.sort(SortedConformingDataList);
+		return SortedConformingDataList;
 	}
 
-	public BufferedReader BufferFile() throws IOException {
+	public void BufferFile() throws IOException {
 		InputStream = new FileInputStream(Path);
 		InputStreamReader = new InputStreamReader(InputStream);
 		BufferedFile = new BufferedReader(InputStreamReader);
-		return BufferedFile;
 	}
-
-	public void ReadFileData(BufferedReader pBufferedFile) throws IOException {
-		String Prefix = "LinhaXX: ";
+	public void ReadFileDataList() throws IOException {
 		String Line = "";
-		
-		while ((Line = pBufferedFile.readLine()) != null) {
-			Line = Line.substring(Prefix.length());
-			if (Line.startsWith("-")) 
-				continue;
-			NonRepeatingDataList.add(Line);
+		FirstLine = BufferedFile.readLine();
+		while ((Line = BufferedFile.readLine()) != null) {
+			DataList.add(Line);
 		}
 	}
-	
-	public List<String> GetFileData(){
-		SortedDataList = new ArrayList<>(NonRepeatingDataList);
-		Collections.sort(SortedDataList);
-		return SortedDataList;
+	public void RemoveNonCompliantData() {
+		for (String item : DataList) {
+			String Item = item;
+			if(Item.contains("-")) {
+				NonConformingDataList.add(item + " - Item com Valor Negativo");
+				continue;
+			}
+			if(!ConformingDataList.add(Item.substring(8))){
+				NonConformingDataList.add(item + " - Dado duplicado");
+			}
+        }
 	}
-
 	public void closeFile() throws IOException {
 		BufferedFile.close();
 	}

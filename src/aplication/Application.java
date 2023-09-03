@@ -5,20 +5,24 @@ import javax.swing.JOptionPane;
 
 import factories.GrafoFactory;
 import infra.ManageFile;
+import util.ProgramParameters;
 
 public class Application {
 
 	public static void main(String[] args) {
-		ManageFile _ManageFile = new ManageFile(args[0]);
+		
+		ManageFile _ManageFile = new ManageFile(args[ProgramParameters.FILE_PATH.getValue()]);
 		try {
 			_ManageFile.BufferFile();
-			_ManageFile.ReadFileData(_ManageFile.getBufferedFile());
+			_ManageFile.ReadFileDataList();
+			_ManageFile.RemoveNonCompliantData();
 			_ManageFile.closeFile();
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, "Erro ao manipular o arquivo: \n\n" + e.getMessage());
 		}
 		
-		GrafoFactory _GraphFactory =  new GrafoFactory(_ManageFile.GetFileData());
+		GrafoFactory _GrafoFactory = new GrafoFactory(_ManageFile.getConformingDataList());
 		
+		_GrafoFactory.CreateGrafo();
 	}
 }
