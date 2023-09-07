@@ -17,7 +17,7 @@ public class ManageFile {
 	private InputStreamReader InputStreamReader;
 	private BufferedReader BufferedFile;
 
-	private String FirstLine;
+	private String FirstLine, LastLine;
 	private List<String> DataList = new ArrayList<String>();
 	private List<String> NonConformingDataList = new ArrayList<String>();
 	private HashSet<String> ConformingDataList = new HashSet<String>();
@@ -25,8 +25,17 @@ public class ManageFile {
 	public ManageFile(String pPath) {
 		this.Path = pPath;
 	}
+	
 	public String getFirstLine() {
 		return FirstLine;
+	}
+	public String getLastLine() {
+		return LastLine;
+	}
+	public List<String> getNonConformingDataList(){
+		List<String> SortedNonConformingDataList = new ArrayList<String>(NonConformingDataList);
+		Collections.sort(SortedNonConformingDataList);
+		return SortedNonConformingDataList;
 	}
 	public List<String> getConformingDataList() {
 		List<String> SortedConformingDataList = new ArrayList<String>(ConformingDataList);
@@ -45,8 +54,10 @@ public class ManageFile {
 		while ((Line = BufferedFile.readLine()) != null) {
 			DataList.add(Line);
 		}
+		LastLine = DataList.get(DataList.size() -1);
+		DataList.remove(DataList.size() - 1);
 	}
-	public void RemoveNonCompliantData() {
+	public void CompliantData() {
 		for (String item : DataList) {
 			String Item = item;
 			if(Item.contains("-")) {

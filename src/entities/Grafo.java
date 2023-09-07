@@ -11,13 +11,17 @@ public class Grafo {
 		ListOfVertices = new ArrayList<Vertice>();
 	}
 
+	public List<Vertice> getListOfVertices() {
+		return ListOfVertices;
+	}
+
 	public Vertice addVertice(String Name) {
 		Vertice v = new Vertice(Name);
 		ListOfVertices.add(v);
 		return v;
 	}
 
-    public Aresta addAresta(Vertice Origin, Vertice Destination) {
+	public Aresta addAresta(Vertice Origin, Vertice Destination) {
 		Aresta a = new Aresta(Origin, Destination);
 		Origin.getAdjacencyList().add(a);
 		return a;
