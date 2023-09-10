@@ -18,6 +18,5 @@ public class Test {
 		g.addAresta(y, t);
 
 		System.out.println(g);
-
 	}
 }

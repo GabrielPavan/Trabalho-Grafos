@@ -10,6 +10,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
+import exceptions.DomainException;
+
 public class ManageFile {
 
 	private String Path;
@@ -17,10 +19,12 @@ public class ManageFile {
 	private InputStreamReader InputStreamReader;
 	private BufferedReader BufferedFile;
 
-	private String FirstLine, LastLine;
+	private String ReadLine, FirstLine, LastLine;
 	private List<String> DataList = new ArrayList<String>();
-	private List<String> NonConformingDataList = new ArrayList<String>();
-	private HashSet<String> ConformingDataList = new HashSet<String>();
+	private HashSet<String> GrafoList = new HashSet<String>();
+	private List<String> GrafoNegative = new ArrayList<String>();
+	private List<String> GrafoDuplicated = new ArrayList<String>();
+	
 
 	public ManageFile(String pPath) {
 		this.Path = pPath;
@@ -32,42 +36,50 @@ public class ManageFile {
 	public String getLastLine() {
 		return LastLine;
 	}
-	public List<String> getNonConformingDataList(){
-		List<String> SortedNonConformingDataList = new ArrayList<String>(NonConformingDataList);
-		Collections.sort(SortedNonConformingDataList);
-		return SortedNonConformingDataList;
+	public List<String> getGrafoList() {
+		List<String> SortedGrafoList = new ArrayList<String>(GrafoList);
+		Collections.sort(SortedGrafoList);
+		return SortedGrafoList;
 	}
-	public List<String> getConformingDataList() {
-		List<String> SortedConformingDataList = new ArrayList<String>(ConformingDataList);
-		Collections.sort(SortedConformingDataList);
-		return SortedConformingDataList;
+	public List<String> getGrafoNegative(){
+		return GrafoNegative;
 	}
-
+	public List<String> getGrafoDuplicated(){
+		return GrafoDuplicated;
+	}
+	
 	public void BufferFile() throws IOException {
 		InputStream = new FileInputStream(Path);
 		InputStreamReader = new InputStreamReader(InputStream);
 		BufferedFile = new BufferedReader(InputStreamReader);
 	}
-	public void ReadFileDataList() throws IOException {
-		String Line = "";
-		FirstLine = BufferedFile.readLine();
-		while ((Line = BufferedFile.readLine()) != null) {
-			DataList.add(Line);
+	
+	public void GetDataFromFile() throws IOException, DomainException {
+		while ((ReadLine = BufferedFile.readLine()) != null) {
+			DataList.add(ReadLine);
 		}
-		LastLine = DataList.get(DataList.size() -1);
-		DataList.remove(DataList.size() - 1);
 	}
-	public void CompliantData() {
+	public void OrganizeData() throws DomainException {
+		FirstLine = DataList.get(0);
+		LastLine = DataList.get(DataList.size() - 1);
+		
+		DataList.remove(0);
+		DataList.remove(DataList.size() - 1);
+		
 		for (String item : DataList) {
-			String Item = item;
-			if(Item.contains("-")) {
-				NonConformingDataList.add(item + " - Item com Valor Negativo");
+			if(item.contains("-")) {
+				GrafoNegative.add( item + " - Nó com Valor Negativo");
 				continue;
 			}
-			if(!ConformingDataList.add(Item.substring(8))){
-				NonConformingDataList.add(item + " - Dado duplicado");
+			if(!GrafoList.add(item.substring(8))) {
+				GrafoDuplicated.add(item + " - Nó duplicado.");
 			}
-        }
+		}
+		int validador = Integer.parseInt(LastLine.substring(16));
+		
+		if(GrafoList.size() != validador) {
+			throw new DomainException("Erro ao consultar o validador da quantidade de Grafos");
+		}
 	}
 	public void closeFile() throws IOException {
 		BufferedFile.close();

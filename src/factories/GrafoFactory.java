@@ -1,33 +1,28 @@
 package factories;
 
-import java.util.ArrayList;
 import java.util.List;
-
 import entities.Grafo;
 
 public class GrafoFactory {
 	
-	List<String> ListOfVertices;
 	Grafo Grafo;
 	
-	public GrafoFactory(List<String> pListOfData) {
-		ListOfVertices = new ArrayList<String>(pListOfData);
-	}
-	
-	public void CreateGrafo() {
+	public GrafoFactory(List<String> pGrafoList) {
 		Grafo = new Grafo();
-		
-		AddVertices(ListOfVertices, Grafo);
+		AddVertices(pGrafoList, Grafo);
 		CreateArestas(Grafo);
 	}
-	private void AddVertices(List<String> pListOfData, Grafo pGrafo) {
-		pListOfData.forEach(X -> {
+	
+	public Grafo getGrafo() {
+		return Grafo;
+	}
+	
+	private void AddVertices(List<String> pListOfVertices, Grafo pGrafo) {
+		pListOfVertices.forEach(X -> {
 			pGrafo.addVertice(X);
 		});
 	}
 	private void CreateArestas(Grafo pGrafo) {
-		pGrafo.getListOfVertices().forEach(X -> {
-			
-		});
+		
 	}
 }
