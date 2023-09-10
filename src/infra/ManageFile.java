@@ -71,7 +71,7 @@ public class ManageFile {
 				GrafoNegative.add( item + " - Nó com Valor Negativo");
 				continue;
 			}
-			if(!GrafoList.add(item.substring(8))) {
+			if(!GrafoList.add(item.substring(9))) {
 				GrafoDuplicated.add(item + " - Nó duplicado.");
 			}
 		}
