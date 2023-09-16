@@ -5,6 +5,7 @@ import javax.swing.JOptionPane;
 
 import entities.Grafo;
 import exceptions.DomainException;
+import exceptions.NotImplementedException;
 import factories.GrafoFactory;
 import infra.ManageFile;
 
@@ -14,25 +15,32 @@ public class Application {
 		
 		ManageFile _ManageFile = new ManageFile("C:\\temp\\configs.txt");
 		try {
-			_ManageFile.BufferFile();
+			_ManageFile.BufferFileReader();
 			_ManageFile.GetDataFromFile();
-			_ManageFile.OrganizeData();
 			_ManageFile.closeFile();
 		} catch (IOException  e) {
 			JOptionPane.showMessageDialog(null, "Erro ao manipular o arquivo: \n\n" + e.getMessage());
+		}
+		
+		GrafoFactory _GrafoFactory = null;
+		try {
+			_GrafoFactory = new GrafoFactory(_ManageFile.getDataList());
 		} catch (DomainException e) {
-			JOptionPane.showMessageDialog(null, "Erro ao validar os dados do arquivo: \n\n" + e.getMessage());
-		} 
-
-		GrafoFactory _GrafoFactory = new GrafoFactory(_ManageFile.getGrafoList());
+			JOptionPane.showMessageDialog(null, "Existe algum erro na montagem do Grafo: \n\n" + e.getMessage());
+			return;
+		}
 		
 		Grafo Grafo = _GrafoFactory.getGrafo();
-		
-		System.out.println(_ManageFile.getFirstLine());
 		System.out.println(Grafo);
-		System.out.println(_ManageFile.getLastLine());
 		
-		System.out.println(_ManageFile.getGrafoDuplicated());
-		System.out.println(_ManageFile.getGrafoNegative());
+		_ManageFile = new ManageFile("C:\\temp\\result.txt");
+		try {
+			_ManageFile.BufferFileWriter();
+			_ManageFile.WriteData(Grafo);
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "Erro ao manipular o arquivo: \n\n" + e.getMessage());
+		} catch (NotImplementedException e) {
+			JOptionPane.showMessageDialog(null, "Tentativa de manipular dado incorreto: \n\n" + e.getMessage());
+		}
 	}
 }
