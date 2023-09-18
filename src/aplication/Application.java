@@ -37,6 +37,7 @@ public class Application {
 		try {
 			_ManageFile.BufferFileWriter();
 			_ManageFile.WriteData(Grafo);
+			_ManageFile.closeFile();
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, "Erro ao manipular o arquivo: \n\n" + e.getMessage());
 		} catch (NotImplementedException e) {
