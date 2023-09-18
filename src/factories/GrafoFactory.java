@@ -23,7 +23,7 @@ public class GrafoFactory {
 		return Grafo;
 	}
 	
-	private void OrganizeDataFromFile(List<String> pGrafoDataListFromFile) throws DomainException {
+	private void OrganizeDataFromFile(List<String> pGrafoDataListFromFile) {
 		Grafo.setIndentifier(pGrafoDataListFromFile.get(0));
 		Grafo.setValidator(pGrafoDataListFromFile.get(pGrafoDataListFromFile.size() - 1));
 		
